@@ -60,18 +60,13 @@ class HomePageState extends State<HomePage> {
   // }
     void initPages() {
     _pages.clear();
-    if (!bind.isIncomingOnly()) {
-      _pages.add(ConnectionPage(
-        appBarActions: [],
-      ));
-    }
-    if (isAndroid && !bind.isOutgoingOnly()) {
-      // _chatPageTabIndex = _pages.length;
-      // 不再添加 ChatPage，隐藏聊天按钮
-      // _pages.addAll([ChatPage(type: ChatPageType.mobileMain), ServerPage()]);
-      _pages.add(ServerPage());
-    }
-    // 已移除 SettingsPage，隐藏整个设置页面
+    // 不再添加 ConnectionPage，隐藏连接页面
+    // if (!bind.isIncomingOnly()) {
+    //   _pages.add(ConnectionPage(appBarActions: [],));
+    // }
+
+    // 添加 ServerPage 作为主页面（或按需替换为你想显示的页面）
+    _pages.add(ServerPage());
 
     // 保证 selectedIndex 在页面数变化后不越界
     if (_selectedIndex >= _pages.length) {
