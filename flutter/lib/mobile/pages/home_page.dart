@@ -66,8 +66,10 @@ class HomePageState extends State<HomePage> {
       ));
     }
     if (isAndroid && !bind.isOutgoingOnly()) {
-      _chatPageTabIndex = _pages.length;
-      _pages.addAll([ChatPage(type: ChatPageType.mobileMain), ServerPage()]);
+      // _chatPageTabIndex = _pages.length;
+      // 不再添加 ChatPage，隐藏聊天按钮
+      // _pages.addAll([ChatPage(type: ChatPageType.mobileMain), ServerPage()]);
+      _pages.add(ServerPage());
     }
     // 已移除 SettingsPage，隐藏整个设置页面
 
