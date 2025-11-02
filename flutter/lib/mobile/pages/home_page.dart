@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hbb/mobile/pages/server_page.dart';
-import 'package:flutter_hbb/mobile/pages/settings_page.dart';
-import 'package:flutter_hbb/web/settings_page.dart';
+// import 'package:flutter_hbb/mobile/pages/settings_page.dart';
+// import 'package:flutter_hbb/web/settings_page.dart';
 import 'package:get/get.dart';
 import '../../common.dart';
 import '../../common/widgets/chat_page.dart';
@@ -45,7 +45,20 @@ class HomePageState extends State<HomePage> {
     initPages();
   }
 
-  void initPages() {
+  // void initPages() {
+  //   _pages.clear();
+  //   if (!bind.isIncomingOnly()) {
+  //     _pages.add(ConnectionPage(
+  //       appBarActions: [],
+  //     ));
+  //   }
+  //   if (isAndroid && !bind.isOutgoingOnly()) {
+  //     _chatPageTabIndex = _pages.length;
+  //     _pages.addAll([ChatPage(type: ChatPageType.mobileMain), ServerPage()]);
+  //   }
+  //   _pages.add(SettingsPage());
+  // }
+    void initPages() {
     _pages.clear();
     if (!bind.isIncomingOnly()) {
       _pages.add(ConnectionPage(
@@ -56,7 +69,12 @@ class HomePageState extends State<HomePage> {
       _chatPageTabIndex = _pages.length;
       _pages.addAll([ChatPage(type: ChatPageType.mobileMain), ServerPage()]);
     }
-    _pages.add(SettingsPage());
+    // 已移除 SettingsPage，隐藏整个设置页面
+
+    // 保证 selectedIndex 在页面数变化后不越界
+    if (_selectedIndex >= _pages.length) {
+      _selectedIndex = _pages.isEmpty ? 0 : _pages.length - 1;
+    }
   }
 
   @override
@@ -155,9 +173,8 @@ class HomePageState extends State<HomePage> {
 }
 
 class WebHomePage extends StatelessWidget {
-  final connectionPage =
-      ConnectionPage(appBarActions: <Widget>[const WebSettingsPage()]);
-
+   final connectionPage =
+      ConnectionPage(appBarActions: <Widget>[]); // 移除 web settings 按钮
   @override
   Widget build(BuildContext context) {
     stateGlobal.isInMainPage = true;
