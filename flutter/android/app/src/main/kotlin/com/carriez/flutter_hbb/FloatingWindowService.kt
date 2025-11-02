@@ -1,4 +1,4 @@
-package com.zhengneng.cable
+package com.gz.yc
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent

@@ -1,4 +1,4 @@
-package com.zhengneng.cable
+package com.gz.yc
 
 /**
  * Handle remote input and dispatch android gesture
