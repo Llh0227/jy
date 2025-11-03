@@ -3907,7 +3907,7 @@ List<String> getPrinterNames() {
 String _appName = '';
 String get appName {
   if (_appName.isEmpty) {
-    _appName = bind.mainGetAppNameSync();
+    _appName = "佳影远程协助";
   }
   return _appName;
 }
