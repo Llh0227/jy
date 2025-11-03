@@ -165,7 +165,7 @@ class HomePageState extends State<HomePage> {
         ],
       );
     }
-    return Text(bind.mainGetAppNameSync());
+    return Text("佳影远程协助");
   }
 }
 
@@ -180,7 +180,7 @@ class WebHomePage extends StatelessWidget {
       // backgroundColor: MyTheme.grayBg,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("${bind.mainGetAppNameSync()} (Preview)"),
+        title: Text("佳影远程协助 (Preview)"),
         actions: connectionPage.appBarActions,
       ),
       body: connectionPage,
