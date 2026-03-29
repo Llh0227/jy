@@ -71,7 +71,8 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
   var _ignoreBatteryOpt = false;
   var _enableStartOnBoot = false;
   var _checkUpdateOnStartup = false;
-  var _floatingWindowDisabled = false;
+  // 默认为关：勿将「系统已授予悬浮窗权限」误认为用户已在本应用内开启悬浮窗。
+  var _floatingWindowDisabled = true;
   var _keepScreenOn = KeepScreenOn.duringControlled; // relay on floating window
   var _enableAbr = false;
   var _denyLANDiscovery = false;
@@ -172,9 +173,9 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
         _checkUpdateOnStartup = checkUpdateOnStartup;
       }
 
-      var floatingWindowDisabled =
-          bind.mainGetLocalOption(key: kOptionDisableFloatingWindow) == "Y" ||
-              !await AndroidPermissionManager.check(kSystemAlertWindow);
+      final floatingOpt =
+          bind.mainGetLocalOption(key: kOptionDisableFloatingWindow);
+      var floatingWindowDisabled = floatingOpt != "N";
       if (floatingWindowDisabled != _floatingWindowDisabled) {
         update = true;
         _floatingWindowDisabled = floatingWindowDisabled;
@@ -596,8 +597,7 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
       }
       final disable = !toValue;
       bind.mainSetLocalOption(
-          key: kOptionDisableFloatingWindow,
-          value: disable ? 'Y' : defaultOptionNo);
+          key: kOptionDisableFloatingWindow, value: disable ? 'Y' : 'N');
       setState(() => _floatingWindowDisabled = disable);
       gFFI.serverModel.androidUpdatekeepScreenOn();
     }
