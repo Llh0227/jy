@@ -31,6 +31,8 @@ class ServerModel with ChangeNotifier {
   bool _audioOk = false;
   bool _fileOk = false;
   bool _clipboardOk = false;
+  // Guard to avoid repeatedly popping Accessibility settings prompt.
+  bool _autoOpenedInputControl = false;
   bool _showElevation = false;
   bool hideCm = false;
   int _connectStatus = 0; // Rendezvous Server status
@@ -484,6 +486,20 @@ class ServerModel with ChangeNotifier {
     switch (name) {
       case "media":
         _mediaOk = value;
+        // MediaProjection becomes ready right after user clicks "Start" on the
+        // system screen-recording prompt. At that moment, guide user to enable
+        // Accessibility input control, same as manually toggling "Input Control".
+        if (value) {
+          if (!_inputOk &&
+              !_autoOpenedInputControl &&
+              parent.target != null) {
+            _autoOpenedInputControl = true;
+            showInputWarnAlert(parent.target!);
+          }
+        } else {
+          // Service stopped; allow auto-open again next time.
+          _autoOpenedInputControl = false;
+        }
         if (value && !_isStart) {
           startService();
         }
@@ -495,6 +511,10 @@ class ServerModel with ChangeNotifier {
               value: value ? defaultOptionYes : 'N');
         }
         _inputOk = value;
+        if (value) {
+          // Input permission is enabled; clear auto-open guard.
+          _autoOpenedInputControl = false;
+        }
         break;
       default:
         return;
