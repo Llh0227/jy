@@ -373,19 +373,19 @@ class ServerModel with ChangeNotifier {
     return res;
   }
 
-  Future<bool> checkFloatingWindowPermission() async {
-    debugPrint("androidVersion $androidVersion");
-    if (androidVersion < 23) {
-      return false;
-    }
-    if (await AndroidPermissionManager.check(kSystemAlertWindow)) {
-      debugPrint("alert window permission already granted");
-      return true;
-    }
-    var res = await AndroidPermissionManager.request(kSystemAlertWindow);
-    debugPrint("alert window permission request result: $res");
-    return res;
-  }
+  // Future<bool> checkFloatingWindowPermission() async {
+  //   debugPrint("androidVersion $androidVersion");
+  //   if (androidVersion < 23) {
+  //     return false;
+  //   }
+  //   if (await AndroidPermissionManager.check(kSystemAlertWindow)) {
+  //     debugPrint("alert window permission already granted");
+  //     return true;
+  //   }
+  //   var res = await AndroidPermissionManager.request(kSystemAlertWindow);
+  //   debugPrint("alert window permission request result: $res");
+  //   return res;
+  // }
 
   /// Toggle the screen sharing service.
   toggleService() async {
@@ -414,10 +414,15 @@ class ServerModel with ChangeNotifier {
       }
     } else {
       await checkRequestNotificationPermission();
-      if (bind.mainGetLocalOption(key: kOptionDisableFloatingWindow) != 'Y') {
-        await checkFloatingWindowPermission();
-      }
-      if (!await AndroidPermissionManager.check(kManageExternalStorage)) {
+      // if (bind.mainGetLocalOption(key: kOptionDisableFloatingWindow) != 'Y') {
+      //   await checkFloatingWindowPermission();
+      // }
+      // if (!await AndroidPermissionManager.check(kManageExternalStorage)) {
+            // 启动服务不再跳转「悬浮窗」设置页；需要悬浮窗时请在本应用「设置」中打开「悬浮窗」开关（该开关会自行请求权限）。
+      // 文本剪贴板不需要「管理全部文件」；仅当已启用文件传输时再请求 MANAGE_EXTERNAL_STORAGE。
+      final fileTransferOn = await bind.mainGetOption(key: kOptionEnableFileTransfer) != 'N';
+      if (fileTransferOn &&
+          !await AndroidPermissionManager.check(kManageExternalStorage)) {
         await AndroidPermissionManager.request(kManageExternalStorage);
       }
       final res = await parent.target?.dialogManager
