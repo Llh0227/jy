@@ -72,7 +72,7 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
   var _enableStartOnBoot = false;
   var _checkUpdateOnStartup = false;
   // 默认为关：勿将「系统已授予悬浮窗权限」误认为用户已在本应用内开启悬浮窗。
-  var _floatingWindowDisabled = true;
+  var _floatingWindowDisabled = false;
   var _keepScreenOn = KeepScreenOn.duringControlled; // relay on floating window
   var _enableAbr = false;
   var _denyLANDiscovery = false;
