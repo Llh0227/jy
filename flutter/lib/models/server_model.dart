@@ -795,10 +795,10 @@ class ServerModel with ChangeNotifier {
 
   void androidUpdatekeepScreenOn() async {
     if (!isAndroid) return;
-    final floatingOpt =
-        bind.mainGetLocalOption(key: kOptionDisableFloatingWindow);
-    var floatingWindowDisabled = floatingOpt != "N" ||
-        !await AndroidPermissionManager.check(kSystemAlertWindow);
+    var floatingWindowDisabled =
+        bind.mainGetLocalOption(key: kOptionDisableFloatingWindow) == "Y" ||
+            !await AndroidPermissionManager.check(kSystemAlertWindow);
+
     final keepScreenOn = floatingWindowDisabled
         ? KeepScreenOn.never
         : optionToKeepScreenOn(
