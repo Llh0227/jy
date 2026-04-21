@@ -395,9 +395,8 @@ class MainActivity : FlutterActivity() {
 
     override fun onStop() {
         super.onStop()
-        // 仅在本应用设置里明确打开悬浮窗（值为 "N"）时才在后台显示悬浮窗；
-        // 系统里「显示在其他应用上层」即使已为允许，也不自动使用。
-        if (FFI.getLocalOption("disable-floating-window") == "N" && MainService.isReady) {
+        val disableFloatingWindow = FFI.getLocalOption("disable-floating-window") == "Y"
+        if (!disableFloatingWindow && MainService.isReady) {
             startService(Intent(this, FloatingWindowService::class.java))
         }
     }
