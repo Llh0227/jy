@@ -173,9 +173,9 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
         _checkUpdateOnStartup = checkUpdateOnStartup;
       }
 
-      final floatingOpt =
-          bind.mainGetLocalOption(key: kOptionDisableFloatingWindow);
-      var floatingWindowDisabled = floatingOpt != "N";
+      var floatingWindowDisabled =
+        bind.mainGetLocalOption(key: kOptionDisableFloatingWindow) == "Y" ||
+          !await AndroidPermissionManager.check(kSystemAlertWindow);
       if (floatingWindowDisabled != _floatingWindowDisabled) {
         update = true;
         _floatingWindowDisabled = floatingWindowDisabled;
@@ -597,7 +597,8 @@ class _SettingsState extends State<SettingsPage> with WidgetsBindingObserver {
       }
       final disable = !toValue;
       bind.mainSetLocalOption(
-          key: kOptionDisableFloatingWindow, value: disable ? 'Y' : 'N');
+                  key: kOptionDisableFloatingWindow,
+          value: disable ? 'Y' : defaultOptionNo);
       setState(() => _floatingWindowDisabled = disable);
       gFFI.serverModel.androidUpdatekeepScreenOn();
     }
